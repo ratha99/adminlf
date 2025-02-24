@@ -353,7 +353,8 @@ const confirmDelete = async () => {
       body: JSON.stringify({ 
         reason: deleteReason.value,
         postId: postToDelete.value.id,
-        userId: postToDelete.value.userId._id
+        userId: postToDelete.value.userId._id,
+        status: ''
        }),
       headers: { 'Content-Type': 'application/json' },
     })
