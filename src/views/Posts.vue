@@ -92,7 +92,7 @@
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <button class="text-indigo-600 hover:text-indigo-900 mr-3">View</button>
+              <button @click="openPostDetailModal(post)" class="text-indigo-600 hover:text-indigo-900 mr-3">View</button>
               <button @click="openDeleteModal(post)" class="text-red-600 hover:text-red-900">Delete</button>
             </td>
           </tr>
@@ -162,12 +162,30 @@
         </div>
       </div>
     </div>
+    <div v-if="isPostDetailModalOpen" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+      <div class="bg-white rounded-lg p-8 w-2/3 max-w-4xl">
+        <h3 class="text-2xl font-semibold text-gray-800 text-center">Post Details</h3>
+        <p><strong>Title:</strong> {{ selectedPost?.title }}</p>
+        
+        <p><strong>Category:</strong> {{ selectedPost?.categoryId }}</p>
+        <p><strong>Status:</strong> {{ selectedPost?.status }}</p>
+        <p><strong>Location:</strong> {{ selectedPost?.location }}</p>
+        <p><strong>Description:</strong> {{ selectedPost?.description }}</p>
+        <img :src="selectedPost?.images" alt="Post Image" class="h-64 w-64 rounded-lg mt-4" />
+        <div class="mt-6 flex justify-end">
+          <button @click="closePostDetailModal" class="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 const apiUrl = import.meta.env.VITE_API_URL
+
 interface Post {
   id: string
   title: string
@@ -254,18 +272,31 @@ const sortBy = (column: keyof Post) => {
     sortDirection.value = 'asc'
   }
 }
+const isPostDetailModalOpen = ref(false)
+const selectedPost = ref<Post | null>(null)
+
+const openPostDetailModal = (post: Post) => {
+  selectedPost.value = post
+  isPostDetailModalOpen.value = true
+}
+
+const closePostDetailModal = () => {
+  isPostDetailModalOpen.value = false
+  selectedPost.value = null
+}
 
 const fetchPosts = async () => {
   try {
     loading.value = true
     error.value = null
     
-    const response = await fetch(`${apiUrl}/post?block="block"`)
+    const response = await fetch(`${apiUrl}/post?limit=100&&block="block"`)
     if (!response.ok) {
       throw new Error('Failed to fetch posts')
     }
     
     const data = await response.json()
+    console.log(data.docs);
     posts.value = data.docs.map((post: any) => ({
       id: post._id,
       title: post.title,
