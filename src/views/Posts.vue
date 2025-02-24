@@ -93,7 +93,7 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <button @click="openPostDetailModal(post)" class="text-indigo-600 hover:text-indigo-900 mr-3">View</button>
-              <button @click="openDeleteModal(post)" class="text-red-600 hover:text-red-900">Delete</button>
+              <button @click="openDeleteModal(post)" class="text-red-600 hover:text-red-900">Block</button>
             </td>
           </tr>
         </tbody>
@@ -139,10 +139,10 @@
     <!-- Delete Confirmation Modal -->
     <div v-if="isDeleteModalOpen" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
       <div class="bg-white rounded-lg p-6 w-96">
-        <h3 class="text-lg font-semibold text-gray-800">Confirm Deletion</h3>
+        <h3 class="text-lg font-semibold text-gray-800">Confirm Block</h3>
         <textarea
           v-model="deleteReason"
-          placeholder="Please provide a reason for deletion"
+          placeholder="Please provide a reason for blocking this post..."
           rows="4"
           class="mt-2 w-full p-2 border border-gray-300 rounded-lg"
         ></textarea>
@@ -157,7 +157,7 @@
             @click="confirmDelete"
             class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
           >
-            Confirm Deletion
+            Confirm Block
           </button>
         </div>
       </div>
