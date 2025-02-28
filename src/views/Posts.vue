@@ -201,6 +201,7 @@ interface Post {
     profile_pic: string
     firstname: string
     lastname: string
+    smToken: string
   }
 }
 
@@ -354,6 +355,14 @@ const confirmDelete = async () => {
         reason: deleteReason.value,
         postId: postToDelete.value.id,
         userId: postToDelete.value.userId._id,
+        smToken: postToDelete.value.userId.smToken,
+        postTitle: postToDelete.value.title,
+        postDescription: postToDelete.value.description,
+        postCategory: postToDelete.value.categoryId,
+        postLocation: postToDelete.value.location,
+        postImages: postToDelete.value.images,
+        postDate: postToDelete.value.date,
+        postPhone: postToDelete.value.phone,
         status: ''
        }),
       headers: { 'Content-Type': 'application/json' },
